@@ -4,18 +4,16 @@ using ProductCatalogApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Configure services for EF Core with the connection string
 builder.Services.AddDbContext<StoreHubContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddMemoryCache();
 builder.Services.AddControllers();
 builder.Services.AddScoped<IProductService, ProductService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-    
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
