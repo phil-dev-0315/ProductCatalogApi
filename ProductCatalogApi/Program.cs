@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Configure services for EF Core with the connection string
 builder.Services.AddDbContext<StoreHubContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("StoreHubConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IProductService, ProductService>();
