@@ -3,9 +3,9 @@ using ProductCatalogApi.Models;
 
 namespace ProductCatalogApi.Data
 {
-    public class StoreHubContext : DbContext
+    public class ProductCatalogContext : DbContext
     {
-        public StoreHubContext(DbContextOptions<StoreHubContext> options) : base(options) { }
+        public ProductCatalogContext(DbContextOptions<ProductCatalogContext> options) : base(options) { }
 
         public DbSet<Product> Products { get; set; }
 

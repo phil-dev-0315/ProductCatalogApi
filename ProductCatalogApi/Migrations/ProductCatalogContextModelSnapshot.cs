@@ -9,8 +9,8 @@ using ProductCatalogApi.Data;
 
 namespace ProductCatalogApi.Migrations
 {
-    [DbContext(typeof(StoreHubContext))]
-    partial class StoreHubContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ProductCatalogContext))]
+    partial class ProductCatalogContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -38,11 +38,11 @@ namespace ProductCatalogApi.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18, 2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 #pragma warning restore 612, 618
         }

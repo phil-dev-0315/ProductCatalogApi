@@ -10,7 +10,7 @@ using ProductCatalogApi.Data;
 
 namespace ProductCatalogApi.Migrations
 {
-    [DbContext(typeof(StoreHubContext))]
+    [DbContext(typeof(ProductCatalogContext))]
     [Migration("20250416052048_InitialCreate")]
     partial class InitialCreate
     {

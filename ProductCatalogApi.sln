@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35818.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductCatalogApi", "ProductCatalogApi\ProductCatalogApi.csproj", "{14D5611C-6593-4DB4-A5FB-ED11EF8B83ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreHubApiTest", "StoreHubApiTest\StoreHubApiTest.csproj", "{A74E1465-5391-47E1-981B-95637F2D9FDB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductCatalogApiTest", "StoreHubApiTest\ProductCatalogApiTest.csproj", "{A74E1465-5391-47E1-981B-95637F2D9FDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
