@@ -2,17 +2,18 @@
 using Microsoft.Extensions.Caching.Memory;
 using ProductCatalogApi.Data;
 using ProductCatalogApi.Models;
+using ProductCatalogApi.Repositories;
 using Serilog;
 
 namespace ProductCatalogApi.Services
 {
     public class ProductService : IProductService
     {
-        private readonly ProductCatalogContext _context;
+        private readonly IProductRepository _productRepository;
         private readonly IMemoryCache _cache;
-        public ProductService(ProductCatalogContext context, IMemoryCache cache)
+        public ProductService(IProductRepository productRepository, IMemoryCache cache)
         {
-            _context = context;
+            _productRepository = productRepository;
             _cache = cache;
         }
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
@@ -21,7 +22,7 @@ namespace ProductCatalogApi.Services
             {
                 if (!_cache.TryGetValue("CachedProducts", out IEnumerable<Product> products))
                 {
-                    products = await _context.Products.ToListAsync();
+                    products = await _productRepository.GetAllAsync();
 
                     // Set cache options
                     var cacheEntryOptions = new MemoryCacheEntryOptions()
@@ -50,12 +51,7 @@ namespace ProductCatalogApi.Services
         {
             try
             {
-                var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
-                if (product == null)
-                {
-                    throw new KeyNotFoundException($"Product with ID {id} not found.");
-                }
-                return product; // Null return can be handle by the consumer.
+                return await _productRepository.GetByIdAsync(id);
             }
             catch (Exception ex)
             {
@@ -68,8 +64,7 @@ namespace ProductCatalogApi.Services
         {
             try
             {
-                await _context.Products.AddAsync(product);
-                await _context.SaveChangesAsync();
+                await _productRepository.AddAsync(product);
 
                 Log.Information("Product added successfully: {@Product}", product);
                 _cache.Remove("CachedProducts");
@@ -83,6 +78,44 @@ namespace ProductCatalogApi.Services
             {
                 Log.Error($"ProductService.AddProductAsync(). Error: {ex.Message} Unexpected error while adding product: {product}");
                 throw new Exception("An error occurred while adding the product. Please try again.");
+            }
+        }
+
+        public async Task UpdateProductAsync(Product product)
+        {
+            try
+            {
+                await _productRepository.UpdateAsync(product);
+                _cache.Remove("CachedProducts"); // Invalidate cache
+            }
+            catch (DbUpdateException dbEx)
+            {
+                Log.Error($"ProductService.UpdateProductAsync(). Database error while updating product: {dbEx.InnerException?.Message}");
+                throw new Exception("A database error occurred while updating the product. Please try again.");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Unexpected error while updating product.");
+                throw new Exception("An error occurred while updating the product. Please try again.");
+            }
+        }
+
+        public async Task DeleteProductAsync(int id)
+        {
+            try
+            {
+                await _productRepository.DeleteAsync(id);
+                _cache.Remove("CachedProducts"); // Invalidate cache
+            }
+            catch (DbUpdateException dbEx)
+            {
+                Log.Error($"ProductService.DeleteProductAsync(). Database error while deleting product with ID: {id}. Error: {dbEx.InnerException?.Message}");
+                throw new Exception("A database error occurred while deleting the product. Please try again.");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Unexpected error while deleting product.");
+                throw new Exception("An error occurred while deleting the product. Please try again.");
             }
         }
     }

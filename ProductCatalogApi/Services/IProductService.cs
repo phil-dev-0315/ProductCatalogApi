@@ -5,8 +5,10 @@ namespace ProductCatalogApi.Services
     public interface IProductService
     {
         Task<IEnumerable<Product>> GetAllProductsAsync();
-        Task<Product?> GetProductByIdAsync(int id); // Updated to async
-        Task AddProductAsync(Product product); // Updated to async
+        Task<Product?> GetProductByIdAsync(int id);
+        Task AddProductAsync(Product product);
+        Task UpdateProductAsync(Product product);
+        Task DeleteProductAsync(int id);
     }
 }
     

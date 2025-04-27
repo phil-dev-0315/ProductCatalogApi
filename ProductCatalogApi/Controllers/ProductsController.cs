@@ -21,6 +21,8 @@ namespace ProductCatalogApi.Controllers
             _logger = logger;
             _env = env;
         }
+
+        // GET api/products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetAllProductsAsync()
         {
@@ -37,6 +39,7 @@ namespace ProductCatalogApi.Controllers
             }
         }
 
+        // GET api/products/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductByIdAsync(int id) // This is where we get by id
         {
@@ -58,6 +61,7 @@ namespace ProductCatalogApi.Controllers
             }
         }
 
+        // POST api/products
         [HttpPost]
         public async Task<ActionResult<Product>> AddProductAsync(Product product) // Updated to async
         {
