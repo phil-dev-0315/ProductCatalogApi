@@ -90,8 +90,9 @@ namespace ProductCatalogApi.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"ProductsController.AddProductAsync(). Error: {ex.Message} Stacktrace: {ex.StackTrace}", product);
+                var message = _env.IsDevelopment() ? ex.Message : "An error occurred while adding the products.";
 
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding the product.");
+                return StatusCode(StatusCodes.Status500InternalServerError, message);
             }
         }
     }
