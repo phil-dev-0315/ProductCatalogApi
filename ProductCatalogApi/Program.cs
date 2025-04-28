@@ -1,12 +1,13 @@
 using System.Net;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ProductCatalogApi.Data;
+using ProductCatalogApi.Repositories;
 using ProductCatalogApi.Services;
 using Serilog;
+using Serilog.Exceptions;
 using Serilog.Exceptions.Core;
 using Serilog.Exceptions.EntityFrameworkCore.Destructurers;
-using Serilog.Exceptions;
-using ProductCatalogApi.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,8 +26,11 @@ builder.Services.AddDbContext<ProductCatalogContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddMemoryCache();
+
 builder.Services.AddControllers(options => 
     options.SuppressAsyncSuffixInActionNames = false);
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
