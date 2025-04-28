@@ -7,7 +7,7 @@ namespace ProductCatalogApi.Commands.Products
     public class AddProductCommand : IRequest<Product>
     {
         public string Name { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
         public decimal Price { get; set; }
     }
     public class AddProductCommandHandler : IRequestHandler<AddProductCommand, Product>
@@ -28,7 +28,7 @@ namespace ProductCatalogApi.Commands.Products
                 Price = request.Price
             };
             await _productService.AddProductAsync(product);
-            return product; // Return the newly created product
+            return product;
         }
     }
 }

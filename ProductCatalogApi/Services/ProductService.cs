@@ -81,42 +81,5 @@ namespace ProductCatalogApi.Services
             }
         }
 
-        public async Task UpdateProductAsync(Product product)
-        {
-            try
-            {
-                await _productRepository.UpdateAsync(product);
-                _cache.Remove("CachedProducts"); // Invalidate cache
-            }
-            catch (DbUpdateException dbEx)
-            {
-                Log.Error($"ProductService.UpdateProductAsync(). Database error while updating product: {dbEx.InnerException?.Message}");
-                throw new Exception("A database error occurred while updating the product. Please try again.");
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Unexpected error while updating product.");
-                throw new Exception("An error occurred while updating the product. Please try again.");
-            }
-        }
-
-        public async Task DeleteProductAsync(int id)
-        {
-            try
-            {
-                await _productRepository.DeleteAsync(id);
-                _cache.Remove("CachedProducts"); // Invalidate cache
-            }
-            catch (DbUpdateException dbEx)
-            {
-                Log.Error($"ProductService.DeleteProductAsync(). Database error while deleting product with ID: {id}. Error: {dbEx.InnerException?.Message}");
-                throw new Exception("A database error occurred while deleting the product. Please try again.");
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "Unexpected error while deleting product.");
-                throw new Exception("An error occurred while deleting the product. Please try again.");
-            }
-        }
     }
 }

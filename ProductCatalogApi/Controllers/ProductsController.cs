@@ -65,7 +65,7 @@ namespace ProductCatalogApi.Controllers
             }
         }
 
-        // Updated AddProductAsync method to handle potential null reference for Description property
+        // POST api/products
         [HttpPost]
         public async Task<ActionResult<Product>> AddProductAsync(Product product) // Updated to async
         {
